@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jenis-Jenis Galaksi - AstronIndo</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
+    <style>
+        .galaxy-detail {
+            padding: 120px 0 80px;
+            background: var(--primary-color);
+        }
+        
+        .galaxy-hero {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .galaxy-hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .galaxy-hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .galaxy-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+        
+        .galaxy-type-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .galaxy-type-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .galaxy-image-container {
+            height: 250px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .galaxy-type-card.spiral .galaxy-image-container {
+            background: radial-gradient(ellipse at center, #ff9800 0%, #e65100 50%, #bf360c 100%);
+        }
+        
+        .galaxy-type-card.elliptical .galaxy-image-container {
+            background: radial-gradient(circle, #f44336 0%, #b71c1c 100%);
+        }
+        
+        .galaxy-type-card.irregular .galaxy-image-container {
+            background: radial-gradient(ellipse at top left, #9c27b0 0%, #4a148c 100%);
+        }
+        
+        .galaxy-type-card.lenticular .galaxy-image-container {
+            background: radial-gradient(ellipse at center, #3f51b5 0%, #1a237e 100%);
+        }
+        
+        .galaxy-content {
+            padding: 30px;
+        }
+        
+        .galaxy-content h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+        
+        .galaxy-content p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .galaxy-features {
+            list-style: none;
+        }
+        
+        .galaxy-features li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .galaxy-features li:before {
+            content: "✦";
+            color: var(--accent-color);
+            margin-right: 10px;
+        }
+        
+        .famous-galaxies {
+            margin-top: 80px;
+        }
+        
+        .famous-galaxies h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--text-dark);
+        }
+        
+        .famous-galaxy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .famous-galaxy-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .famous-galaxy-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .famous-galaxy-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+        
+        .famous-galaxy-card .galaxy-type {
+            display: inline-block;
+            padding: 5px 10px;
+            background: rgba(124, 77, 255, 0.2);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .back-to-home {
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--gradient-accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(124, 77, 255, 0.6);
+        }
+        
+        .galaxy-formation {
+            margin-top: 80px;
+            padding: 60px 0;
+            background: linear-gradient(180deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+        
+        .formation-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .formation-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: var(--text-dark);
+        }
+        
+        .formation-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .formation-step {
+            text-align: center;
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .step-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+        
+        @media (max-width: 768px) {
+            .galaxy-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .galaxy-types {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="../assets/images/logo.svg" alt="AstronIndo Logo">
+                <span>AstronIndo</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="../index.html" class="nav-link">Beranda</a>
+                </li>
+                <li class="nav-item">
+                    <a href="galaksi.html" class="nav-link">Galaksi</a>
+                </li>
+                <li class="nav-item">
+                    <a href="planet.html" class="nav-link">Planet</a>
+                </li>
+                <li class="nav-item">
+                    <a href="quiz.html" class="nav-link">Quiz</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Galaxy Detail Section -->
+    <section class="galaxy-detail">
+        <div class="container">
+            <div class="galaxy-hero">
+                <h1>Jenis-Jenis Galaksi</h1>
+                <p>Galaksi adalah sistem yang terdiri dari bintang, gas, debu, dan materi gelap yang terikat oleh gravitasi. Mari kita jelajahi berbagai jenis galaksi yang ada di alam semesta.</p>
+            </div>
+
+            <div class="galaxy-types">
+                <div class="galaxy-type-card spiral">
+                    <div class="galaxy-image-container"></div>
+                    <div class="galaxy-content">
+                        <h3>Galaksi Spiral</h3>
+                        <p>Galaksi spiral memiliki ciri khas lengan spiral yang mengelilingi pusatnya. Bima Sakti, galaksi tempat kita tinggal, adalah contoh galaksi spiral.</p>
+                        <ul class="galaxy-features">
+                            <li>Pusat galaksi yang cerah (bulge)</li>
+                            <li>Lengan spiral yang mengandung bintang muda</li>
+                            <li>Diameter berkisar 10.000 - 300.000 tahun cahaya</li>
+                            <li>Mengandung gas dan debu untuk pembentukan bintang</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="galaxy-type-card elliptical">
+                    <div class="galaxy-image-container"></div>
+                    <div class="galaxy-content">
+                        <h3>Galaksi Eliptikal</h3>
+                        <p>Galaksi eliptikal memiliki bentuk elips hampir bulat tanpa struktur spiral. Galaksi ini umumnya mengandung bintang-bintang yang lebih tua.</p>
+                        <ul class="galaxy-features">
+                            <li>Bentuk bervariasi dari hampir bulat hingga sangat pipih</li>
+                            <li>Sedikit gas dan debu antarbintang</li>
+                            <li>Pembentukan bintang yang minimal</li>
+                            <li>Ukuran sangat bervariasi, dari dwarf hingga giant</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="galaxy-type-card irregular">
+                    <div class="galaxy-image-container"></div>
+                    <div class="galaxy-content">
+                        <h3>Galaksi Tak Beraturan</h3>
+                        <p>Galaksi tak beraturan tidak memiliki bentuk yang terdefinisi dengan baik. Galaksi ini seringkali kaya akan gas dan pembentukan bintang yang aktif.</p>
+                        <ul class="galaxy-features">
+                            <li>Tidak memiliki bentuk yang teratur</li>
+                            <li>Kaya akan gas dan debu</li>
+                            <li>Pembentukan bintang yang sangat aktif</li>
+                            <li>Umumnya galaksi yang lebih kecil</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="galaxy-type-card lenticular">
+                    <div class="galaxy-image-container"></div>
+                    <div class="galaxy-content">
+                        <h3>Galaksi Lensa</h3>
+                        <p>Galaksi lensa adalah peralihan antara galaksi eliptikal dan spiral, memiliki cakram tetapi tanpa lengan spiral yang jelas.</p>
+                        <ul class="galaxy-features">
+                            <li>Memiliki cakram dan bulge seperti galaksi spiral</li>
+                            <li>Minimal atau tidak ada lengan spiral</li>
+                            <li>Sedikit pembentukan bintang</li>
+                            <li>Umumnya mengandung bintang-bintang yang lebih tua</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="galaxy-formation">
+                <div class="formation-content">
+                    <h2>Formasi Galaksi</h2>
+                    <p>Galaksi terbentuk melalui proses evolusi yang panjang selama miliaran tahun. Berikut adalah tahapan utama dalam pembentukan galaksi:</p>
+                    
+                    <div class="formation-steps">
+                        <div class="formation-step">
+                            <div class="step-number">1</div>
+                            <h3 class="step-title">Fluktuasi Kuantum</h3>
+                            <p>Ketidakseragaman kecil dalam materi awal alam semesta</p>
+                        </div>
+                        <div class="formation-step">
+                            <div class="step-number">2</div>
+                            <h3 class="step-title">Kolaps Gravitasi</h3>
+                            <p>Materi mulai berkumpul membentuk struktur yang lebih besar</p>
+                        </div>
+                        <div class="formation-step">
+                            <div class="step-number">3</div>
+                            <h3 class="step-title">Pembentukan Bintang</h3>
+                            <p>Bintang pertama terbentuk dari gas yang mendingin</p>
+                        </div>
+                        <div class="formation-step">
+                            <div class="step-number">4</div>
+                            <h3 class="step-title">Evolusi & Merger</h3>
+                            <p>Galaksi tumbuh melalui penggabungan dan evolusi</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="famous-galaxies">
+                <h2>Galaksi Terkenal</h2>
+                <div class="famous-galaxy-grid">
+                    <div class="famous-galaxy-card">
+                        <h3>Bima Sakti</h3>
+                        <span class="galaxy-type">Galaksi Spiral</span>
+                        <p>Galaksi tempat tata surya kita berada. Berdiameter sekitar 100.000 tahun cahaya dan mengandung 200-400 miliar bintang.</p>
+                    </div>
+                    <div class="famous-galaxy-card">
+                        <h3>Andromeda</h3>
+                        <span class="galaxy-type">Galaksi Spiral</span>
+                        <p>Galaksi terdekat dengan Bima Sakti, berjarak sekitar 2,5 juta tahun cahaya. Diperkirakan akan bertabrakan dengan Bima Sakti dalam 4 miliar tahun.</p>
+                    </div>
+                    <div class="famous-galaxy-card">
+                        <h3>Magellanic Clouds</h3>
+                        <span class="galaxy-type">Galaksi Tak Beraturan</span>
+                        <p>Dua galaksi satelit Bima Sakti yang dapat dilihat dengan mata telanjang dari belahan bumi selatan.</p>
+                    </div>
+                    <div class="famous-galaxy-card">
+                        <h3>Sombrero</h3>
+                        <span class="galaxy-type">Galaksi Lensa</span>
+                        <p>Galaksi yang terkenal dengan cincin debu yang mencolok di sekitar cakramnya, mirip dengan topi sombrero Meksiko.</p>
+                    </div>
+                    <div class="famous-galaxy-card">
+                        <h3>Whirlpool</h3>
+                        <span class="galaxy-type">Galaksi Spiral</span>
+                        <p>Galaksi spiral klasik dengan lengan yang sangat jelas dan terstruktur, sering digunakan sebagai contoh galaksi spiral.</p>
+                    </div>
+                    <div class="famous-galaxy-card">
+                        <h3>Centaurus A</h3>
+                        <span class="galaxy-type">Galaksi Eliptikal</span>
+                        <p>Galaksi eliptikal raksasa dengan jalur debu yang mencolok dan sumber radio yang sangat kuat.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="back-to-home">
+                <a href="../index.html" class="back-btn">Kembali ke Beranda</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="../assets/images/logo.svg" alt="AstronIndo Logo">
+                    <span>AstronIndo</span>
+                </div>
+                <div class="footer-links">
+                    <h4>Tautan Cepat</h4>
+                    <ul>
+                        <li><a href="../index.html">Beranda</a></li>
+                        <li><a href="galaksi.html">Galaksi</a></li>
+                        <li><a href="planet.html">Planet</a></li>
+                        <li><a href="quiz.html">Quiz</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Ikuti Kami</h4>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"></a>
+                        <a href="#" class="social-icon"></a>
+                        <a href="#" class="social-icon"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 AstronIndo. Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+        // Register GSAP plugins
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Mobile navigation toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Galaxy cards animation with ScrollTrigger
+        gsap.from('.galaxy-type-card', {
+            scrollTrigger: {
+                trigger: '.galaxy-types',
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            },
+            scale: 0.8,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: 'back.out(1.2)'
+        });
+
+        // Formation steps animation
+        gsap.from('.formation-step', {
+            scrollTrigger: {
+                trigger: '.formation-steps',
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            },
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: 'power2.out'
+        });
+
+        // Famous galaxies animation
+        gsap.from('.famous-galaxy-card', {
+            scrollTrigger: {
+                trigger: '.famous-galaxy-grid',
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            },
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: 'power2.out'
+        });
+    </script>
+</body>
+</html>

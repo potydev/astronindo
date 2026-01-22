@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstronIndo - Jelajahi Alam Semesta</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-content">
+            <div class="planet-loader">
+                <div class="planet"></div>
+                <div class="orbit"></div>
+            </div>
+            <h2 class="loading-text">Memuat Alam Semesta...</h2>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="assets/images/logo.svg" alt="AstronIndo Logo">
+                <span>AstronIndo</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#beranda" class="nav-link">Beranda</a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/galaksi.html" class="nav-link">Galaksi</a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/planet.html" class="nav-link">Planet</a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/quiz.html" class="nav-link">Quiz</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="beranda" class="hero">
+        <div class="stars-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Jelajahi Keajaiban Alam Semesta</h1>
+            <p class="hero-subtitle">Temukan misteri galaksi, planet, dan bintang-bintang dalam perjalanan astronomi interaktif</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="window.location.href='pages/galaksi.html'">Mulai Eksplorasi</button>
+                <button class="btn btn-secondary" onclick="window.location.href='pages/planet.html'">Pelajari Lebih Lanjut</button>
+            </div>
+        </div>
+        <div class="astronaut">
+            <div class="astronaut-body"></div>
+            <div class="astronaut-head"></div>
+            <div class="astronaut-arm left"></div>
+            <div class="astronaut-arm right"></div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Fitur Pembelajaran</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <div class="icon-galaxy"></div>
+                    </div>
+                    <h3>Eksplorasi Galaksi</h3>
+                    <p>Jelajahi berbagai jenis galaksi dari Bima Sakti hingga galaksi-galaksi jauh</p>
+                    <button class="btn btn-secondary" style="margin-top: 15px;" onclick="window.location.href='pages/galaksi.html'">Pelajari Galaksi</button>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <div class="icon-planet"></div>
+                    </div>
+                    <h3>Planet Tata Surya</h3>
+                    <p>Pelajari karakteristik setiap planet dalam tata surya kita</p>
+                    <button class="btn btn-secondary" style="margin-top: 15px;" onclick="window.location.href='pages/planet.html'">Jelajahi Planet</button>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <div class="icon-quiz"></div>
+                    </div>
+                    <h3>Quiz Interaktif</h3>
+                    <p>Uji pengetahuan astronomi Anda dengan quiz yang menarik</p>
+                    <button class="btn btn-secondary" style="margin-top: 15px;" onclick="window.location.href='pages/quiz.html'">Mulai Quiz</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galaxy Section -->
+    <section id="galaksi" class="galaxy-section">
+        <div class="container">
+            <h2 class="section-title">Jenis-Jenis Galaksi</h2>
+            <div class="galaxy-container">
+                <div class="galaxy-card spiral">
+                    <div class="galaxy-image"></div>
+                    <h3>Galaksi Spiral</h3>
+                    <p>Galaksi dengan lengan spiral yang mengelilingi pusatnya, seperti Bima Sakti kita</p>
+                </div>
+                <div class="galaxy-card elliptical">
+                    <div class="galaxy-image"></div>
+                    <h3>Galaksi Eliptikal</h3>
+                    <p>Galaksi berbentuk elips dengan distribusi bintang yang lebih tua</p>
+                </div>
+                <div class="galaxy-card irregular">
+                    <div class="galaxy-image"></div>
+                    <h3>Galaksi Tak Beraturan</h3>
+                    <p>Galaksi tanpa bentuk yang terdefinisi dengan baik</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Planets Section -->
+    <section id="planet" class="planets-section">
+        <div class="container">
+            <h2 class="section-title">Tata Surya Kita</h2>
+            <div class="solar-system">
+                <div class="sun"></div>
+                <div class="orbit mercury-orbit">
+                    <div class="planet mercury" data-name="Merkurius"></div>
+                </div>
+                <div class="orbit venus-orbit">
+                    <div class="planet venus" data-name="Venus"></div>
+                </div>
+                <div class="orbit earth-orbit">
+                    <div class="planet earth" data-name="Bumi"></div>
+                </div>
+                <div class="orbit mars-orbit">
+                    <div class="planet mars" data-name="Mars"></div>
+                </div>
+                <div class="orbit jupiter-orbit">
+                    <div class="planet jupiter" data-name="Jupiter"></div>
+                </div>
+                <div class="orbit saturn-orbit">
+                    <div class="planet saturn" data-name="Saturnus"></div>
+                </div>
+                <div class="orbit uranus-orbit">
+                    <div class="planet uranus" data-name="Uranus"></div>
+                </div>
+                <div class="orbit neptune-orbit">
+                    <div class="planet neptune" data-name="Neptunus"></div>
+                </div>
+            </div>
+            <div class="planet-info">
+                <h3 id="planet-name">Pilih Planet</h3>
+                <p id="planet-description">Klik pada planet untuk melihat informasi lebih lanjut</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiz Section -->
+    <section id="quiz" class="quiz-section">
+        <div class="container">
+            <h2 class="section-title">Quiz Astronomi</h2>
+            <div class="quiz-container">
+                <div class="quiz-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <span class="progress-text">1/10</span>
+                </div>
+                <div class="quiz-question">
+                    <h3 id="question-text">Planet manakah yang dikenal sebagai "Planet Merah"?</h3>
+                    <div class="quiz-options">
+                        <button class="option-btn">Venus</button>
+                        <button class="option-btn">Mars</button>
+                        <button class="option-btn">Jupiter</button>
+                        <button class="option-btn">Saturnus</button>
+                    </div>
+                </div>
+                <div class="quiz-result hidden">
+                    <h3 id="result-title">Jawaban Benar!</h3>
+                    <p id="result-text">Mars dikenal sebagai Planet Merah karena kandungan oksida besi di permukaannya</p>
+                    <button class="btn btn-primary next-question">Pertanyaan Selanjutnya</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/images/logo.png" alt="AstronIndo Logo">
+                    <span>AstronIndo</span>
+                </div>
+                <div class="footer-links">
+                    <h4>Tautan Cepat</h4>
+                    <ul>
+                        <li><a href="#beranda">Beranda</a></li>
+                        <li><a href="pages/galaksi.html">Galaksi</a></li>
+                        <li><a href="pages/planet.html">Planet</a></li>
+                        <li><a href="pages/quiz.html">Quiz</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Ikuti Kami</h4>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"></a>
+                        <a href="#" class="social-icon"></a>
+                        <a href="#" class="social-icon"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 AstronIndo. Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

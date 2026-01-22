@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tata Surya Kita - AstronIndo</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
+    <style>
+        .planet-detail {
+            padding: 120px 0 80px;
+            background: var(--primary-color);
+        }
+        
+        .planet-hero {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .planet-hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .planet-hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .solar-system-interactive {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            margin: 0 auto 80px;
+            background: radial-gradient(ellipse at center, rgba(26, 35, 126, 0.3) 0%, var(--primary-color) 70%);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        .sun-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #ffeb3b 0%, #ff9800 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 30px #ff9800;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .orbit-path {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .planet-orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .planet-item {
+            position: absolute;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            z-index: 5;
+        }
+        
+        .planet-item:hover {
+            transform: scale(1.5);
+            z-index: 20;
+        }
+        
+        .planet-item.mercury {
+            width: 8px;
+            height: 8px;
+            background: #9e9e9e;
+            top: -60px;
+            left: -4px;
+        }
+        
+        .planet-item.venus {
+            width: 14px;
+            height: 14px;
+            background: #ffc107;
+            top: -90px;
+            left: -7px;
+        }
+        
+        .planet-item.earth {
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, #2196f3 0%, #4caf50 100%);
+            top: -120px;
+            left: -8px;
+        }
+        
+        .planet-item.mars {
+            width: 12px;
+            height: 12px;
+            background: #f44336;
+            top: -150px;
+            left: -6px;
+        }
+        
+        .planet-item.jupiter {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #ff9800 0%, #795548 100%);
+            top: -200px;
+            left: -15px;
+        }
+        
+        .planet-item.saturn {
+            width: 26px;
+            height: 26px;
+            background: #ffeb3b;
+            top: -250px;
+            left: -13px;
+        }
+        
+        .planet-item.saturn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 8px;
+            border: 2px solid rgba(255, 235, 59, 0.7);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) rotateX(60deg);
+        }
+        
+        .planet-item.uranus {
+            width: 18px;
+            height: 18px;
+            background: #00bcd4;
+            top: -300px;
+            left: -9px;
+        }
+        
+        .planet-item.neptune {
+            width: 16px;
+            height: 16px;
+            background: #3f51b5;
+            top: -350px;
+            left: -8px;
+        }
+        
+        .planet-tooltip {
+            position: absolute;
+            background: rgba(10, 14, 39, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 30;
+            white-space: nowrap;
+        }
+        
+        .planet-tooltip.active {
+            opacity: 1;
+        }
+        
+        .planet-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+        
+        .planet-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .planet-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .planet-image {
+            height: 200px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .planet-visual {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            position: relative;
+        }
+        
+        .planet-card.mercury .planet-visual {
+            background: radial-gradient(circle at 30% 30%, #e0e0e0, #9e9e9e);
+        }
+        
+        .planet-card.venus .planet-visual {
+            background: radial-gradient(circle at 30% 30%, #fff176, #ffc107);
+        }
+        
+        .planet-card.earth .planet-visual {
+            background: radial-gradient(circle at 30% 30%, #64b5f6, #2196f3);
+            position: relative;
+        }
+        
+        .planet-card.earth .planet-visual::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            width: 40%;
+            height: 30%;
+            background: rgba(76, 175, 80, 0.7);
+            border-radius: 50%;
+        }
+        
+        .planet-card.mars .planet-visual {
+            background: radial-gradient(circle at 30% 30%, #ef5350, #f44336);
+        }
+        
+        .planet-card.jupiter .planet-visual {
+            background: linear-gradient(180deg, #ffb74d 0%, #ff9800 25%, #795548 50%, #ff9800 75%, #ffb74d 100%);
+        }
+        
+        .planet-card.saturn .planet-visual {
+            background: radial-gradient(circle at 30% 30%, #fff176, #ffeb3b);
+            position: relative;
+        }
+        
+        .planet-card.saturn .planet-visual::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150px;
+            height: 20px;
+            border: 3px solid rgba(255, 235, 59, 0.7);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) rotateX(60deg);
+        }
+        
+        .planet-card.uranus .planet-visual {
+            background: radial-gradient(circle at 30% 30%, #4dd0e1, #00bcd4);
+        }
+        
+        .planet-card.neptune .planet-visual {
+            background: radial-gradient(circle at 30% 30%, #7986cb, #3f51b5);
+        }
+        
+        .planet-content {
+            padding: 25px;
+        }
+        
+        .planet-content h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+        
+        .planet-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-bottom: 3px;
+        }
+        
+        .stat-value {
+            font-weight: 600;
+            color: var(--light-accent);
+        }
+        
+        .planet-description {
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .planet-facts {
+            list-style: none;
+        }
+        
+        .planet-facts li {
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .planet-facts li:before {
+            content: "✦";
+            color: var(--accent-color);
+            margin-right: 8px;
+        }
+        
+        .solar-system-info {
+            background: linear-gradient(180deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 60px 0;
+            margin-top: 80px;
+        }
+        
+        .info-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .info-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--text-dark);
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .info-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            background: var(--gradient-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .info-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+        
+        .info-card p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .back-to-home {
+            text-align: center;
+            margin-top: 60px;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--gradient-accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(124, 77, 255, 0.6);
+        }
+        
+        @media (max-width: 768px) {
+            .planet-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .solar-system-interactive {
+                height: 400px;
+            }
+            
+            .planet-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="../assets/images/logo.svg" alt="AstronIndo Logo">
+                <span>AstronIndo</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="../index.html" class="nav-link">Beranda</a>
+                </li>
+                <li class="nav-item">
+                    <a href="galaksi.html" class="nav-link">Galaksi</a>
+                </li>
+                <li class="nav-item">
+                    <a href="planet.html" class="nav-link">Planet</a>
+                </li>
+                <li class="nav-item">
+                    <a href="quiz.html" class="nav-link">Quiz</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Planet Detail Section -->
+    <section class="planet-detail">
+        <div class="container">
+            <div class="planet-hero">
+                <h1>Tata Surya Kita</h1>
+                <p>Tata surya kita terdiri dari Matahari dan semua objek yang terikat oleh gravitasinya, termasuk delapan planet, planet kerdil, asteroid, dan komet.</p>
+            </div>
+
+            <div class="solar-system-interactive">
+                <div class="sun-center" data-name="Matahari"></div>
+                
+                <!-- Orbit paths -->
+                <div class="orbit-path" style="width: 120px; height: 120px;"></div>
+                <div class="orbit-path" style="width: 180px; height: 180px;"></div>
+                <div class="orbit-path" style="width: 240px; height: 240px;"></div>
+                <div class="orbit-path" style="width: 300px; height: 300px;"></div>
+                <div class="orbit-path" style="width: 400px; height: 400px;"></div>
+                <div class="orbit-path" style="width: 500px; height: 500px;"></div>
+                <div class="orbit-path" style="width: 600px; height: 600px;"></div>
+                <div class="orbit-path" style="width: 700px; height: 700px;"></div>
+                
+                <!-- Planets -->
+                <div class="planet-orbit" style="width: 120px; height: 120px; animation: rotate 4s linear infinite;">
+                    <div class="planet-item mercury" data-name="Merkurius"></div>
+                </div>
+                <div class="planet-orbit" style="width: 180px; height: 180px; animation: rotate 7s linear infinite;">
+                    <div class="planet-item venus" data-name="Venus"></div>
+                </div>
+                <div class="planet-orbit" style="width: 240px; height: 240px; animation: rotate 10s linear infinite;">
+                    <div class="planet-item earth" data-name="Bumi"></div>
+                </div>
+                <div class="planet-orbit" style="width: 300px; height: 300px; animation: rotate 15s linear infinite;">
+                    <div class="planet-item mars" data-name="Mars"></div>
+                </div>
+                <div class="planet-orbit" style="width: 400px; height: 400px; animation: rotate 25s linear infinite;">
+                    <div class="planet-item jupiter" data-name="Jupiter"></div>
+                </div>
+                <div class="planet-orbit" style="width: 500px; height: 500px; animation: rotate 30s linear infinite;">
+                    <div class="planet-item saturn" data-name="Saturnus"></div>
+                </div>
+                <div class="planet-orbit" style="width: 600px; height: 600px; animation: rotate 40s linear infinite;">
+                    <div class="planet-item uranus" data-name="Uranus"></div>
+                </div>
+                <div class="planet-orbit" style="width: 700px; height: 700px; animation: rotate 50s linear infinite;">
+                    <div class="planet-item neptune" data-name="Neptunus"></div>
+                </div>
+                
+                <div class="planet-tooltip"></div>
+            </div>
+
+            <div class="planet-cards">
+                <div class="planet-card mercury">
+                    <div class="planet-image">
+                        <div class="planet-visual"></div>
+                    </div>
+                    <div class="planet-content">
+                        <h3>Merkurius</h3>
+                        <div class="planet-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Diameter</span>
+                                <span class="stat-value">4.879 km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Jarak dari Matahari</span>
+                                <span class="stat-value">57,9 juta km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Periode Orbit</span>
+                                <span class="stat-value">88 hari</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Suhu Permukaan</span>
+                                <span class="stat-value">-173°C hingga 427°C</span>
+                            </div>
+                        </div>
+                        <p class="planet-description">Planet terkecil dan terdekat dengan Matahari, dengan permukaan yang dipenuhi kawah.</p>
+                        <ul class="planet-facts">
+                            <li>Tidak memiliki atmosfer yang signifikan</li>
+                            <li>Sehari di Merkurius sama dengan 59 hari Bumi</li>
+                            <li>Memiliki kutub es meskipun dekat dengan Matahari</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="planet-card venus">
+                    <div class="planet-image">
+                        <div class="planet-visual"></div>
+                    </div>
+                    <div class="planet-content">
+                        <h3>Venus</h3>
+                        <div class="planet-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Diameter</span>
+                                <span class="stat-value">12.104 km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Jarak dari Matahari</span>
+                                <span class="stat-value">108,2 juta km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Periode Orbit</span>
+                                <span class="stat-value">225 hari</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Suhu Permukaan</span>
+                                <span class="stat-value">462°C (rata-rata)</span>
+                            </div>
+                        </div>
+                        <p class="planet-description">Planet terpanas dalam tata surya dengan atmosfer tebal yang mengandung karbon dioksida.</p>
+                        <ul class="planet-facts">
+                            <li>Berputar dalam arah berlawanan dengan planet lain</li>
+                            <li>Dikenal sebagai "Bintang Pagi" atau "Bintang Sore"</li>
+                            <li>Tekanan atmosfer 90 kali lebih besar dari Bumi</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="planet-card earth">
+                    <div class="planet-image">
+                        <div class="planet-visual"></div>
+                    </div>
+                    <div class="planet-content">
+                        <h3>Bumi</h3>
+                        <div class="planet-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Diameter</span>
+                                <span class="stat-value">12.742 km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Jarak dari Matahari</span>
+                                <span class="stat-value">149,6 juta km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Periode Orbit</span>
+                                <span class="stat-value">365,25 hari</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Suhu Permukaan</span>
+                                <span class="stat-value">-88°C hingga 58°C</span>
+                            </div>
+                        </div>
+                        <p class="planet-description">Planet kita, satu-satunya planet yang diketahui memiliki kehidupan dengan air dalam bentuk cair.</p>
+                        <ul class="planet-facts">
+                            <li>71% permukaan tertutup air</li>
+                            <li>Memiliki satu satelit alami, Bulan</li>
+                            <li>Atmosfer mengandung 21% oksigen</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="planet-card mars">
+                    <div class="planet-image">
+                        <div class="planet-visual"></div>
+                    </div>
+                    <div class="planet-content">
+                        <h3>Mars</h3>
+                        <div class="planet-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Diameter</span>
+                                <span class="stat-value">6.779 km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Jarak dari Matahari</span>
+                                <span class="stat-value">227,9 juta km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Periode Orbit</span>
+                                <span class="stat-value">687 hari</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Suhu Permukaan</span>
+                                <span class="stat-value">-143°C hingga 35°C</span>
+                            </div>
+                        </div>
+                        <p class="planet-description">Dikenal sebagai "Planet Merah" karena kandungan oksida besi di permukaannya.</p>
+                        <ul class="planet-facts">
+                            <li>Memiliki gunung tertinggi di tata surya, Olympus Mons</li>
+                            <li>Memiliki dua bulan kecil, Phobos dan Deimos</li>
+                            <li>Memiliki kutub es yang terdiri dari air dan CO₂ beku</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="planet-card jupiter">
+                    <div class="planet-image">
+                        <div class="planet-visual"></div>
+                    </div>
+                    <div class="planet-content">
+                        <h3>Jupiter</h3>
+                        <div class="planet-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Diameter</span>
+                                <span class="stat-value">139.820 km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Jarak dari Matahari</span>
+                                <span class="stat-value">778,5 juta km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Periode Orbit</span>
+                                <span class="stat-value">11,86 tahun</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Suhu Permukaan</span>
+                                <span class="stat-value">-108°C (awan atas)</span>
+                            </div>
+                        </div>
+                        <p class="planet-description">Planet terbesar dalam tata surya dengan "Bintang Merah Besar" yang merupakan badai raksasa.</p>
+                        <ul class="planet-facts">
+                            <li>Memiliki lebih dari 75 bulan yang diketahui</li>
+                            <li>Bintang Merah Besar telah berlangsung selama 350+ tahun</li>
+                            <li>Memiliki medan magnet terkuat setelah Matahari</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="planet-card saturn">
+                    <div class="planet-image">
+                        <div class="planet-visual"></div>
+                    </div>
+                    <div class="planet-content">
+                        <h3>Saturnus</h3>
+                        <div class="planet-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Diameter</span>
+                                <span class="stat-value">116.460 km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Jarak dari Matahari</span>
+                                <span class="stat-value">1,4 miliar km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Periode Orbit</span>
+                                <span class="stat-value">29,46 tahun</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Suhu Permukaan</span>
+                                <span class="stat-value">-139°C (awan atas)</span>
+                            </div>
+                        </div>
+                        <p class="planet-description">Dikenal dengan sistem cincinnya yang spektakuler yang terdiri dari partikel es dan batuan.</p>
+                        <ul class="planet-facts">
+                            <li>Memiliki setidaknya 82 bulan yang diketahui</li>
+                            <li>Cincin Saturnus hanya setebal 10 meter</li>
+                            <li>Planet dengan densitas terendah (bisa mengapung di air)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="planet-card uranus">
+                    <div class="planet-image">
+                        <div class="planet-visual"></div>
+                    </div>
+                    <div class="planet-content">
+                        <h3>Uranus</h3>
+                        <div class="planet-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Diameter</span>
+                                <span class="stat-value">50.724 km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Jarak dari Matahari</span>
+                                <span class="stat-value">2,9 miliar km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Periode Orbit</span>
+                                <span class="stat-value">84 tahun</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Suhu Permukaan</span>
+                                <span class="stat-value">-197°C (awan atas)</span>
+                            </div>
+                        </div>
+                        <p class="planet-description">Planet yang miring pada sisinya dengan kemiringan sumbu sekitar 98 derajat.</p>
+                        <ul class="planet-facts">
+                            <li>Memiliki cincin yang tipis dan sulit dilihat</li>
+                            <li>Memiliki 27 bulan yang diketahui</li>
+                            <li>Memiliki sumbu rotasi yang hampir sejajar dengan bidang orbitnya</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="planet-card neptune">
+                    <div class="planet-image">
+                        <div class="planet-visual"></div>
+                    </div>
+                    <div class="planet-content">
+                        <h3>Neptunus</h3>
+                        <div class="planet-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Diameter</span>
+                                <span class="stat-value">49.244 km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Jarak dari Matahari</span>
+                                <span class="stat-value">4,5 miliar km</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Periode Orbit</span>
+                                <span class="stat-value">165 tahun</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Suhu Permukaan</span>
+                                <span class="stat-value">-201°C (awan atas)</span>
+                            </div>
+                        </div>
+                        <p class="planet-description">Planet terjauh dari Matahari dengan angin tercepat dalam tata surya.</p>
+                        <ul class="planet-facts">
+                            <li>Memiliki angin tercepat, mencapai 2.100 km/jam</li>
+                            <li>Memiliki 14 bulan yang diketahui, termasuk Triton</li>
+                            <li>Ditemukan melalui perhitungan matematis, bukan observasi</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="solar-system-info">
+                <div class="info-content">
+                    <h2>Fakta Menarik Tata Surya</h2>
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <div class="info-icon">☀️</div>
+                            <h3>Matahari</h3>
+                            <p>Matahari mengandung 99,86% massa seluruh tata surya. Intinya mencapai suhu 15 juta derajat Celsius.</p>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon">🌍</div>
+                            <h3>Zona Kehidupan</h3>
+                            <p>Bumi berada di "zona kehidupan" yang memungkinkan adanya air cair, suhu yang sesuai, dan radiasi yang tepat.</p>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon">🌙</div>
+                            <h3>Satelit Alami</h3>
+                            <p>Terdapat lebih dari 200 bulan yang diketahui dalam tata surya, dengan Jupiter dan Saturnus memiliki jumlah terbanyak.</p>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon">☄️</div>
+                            <h3>Asteroid & Komet</h3>
+                            <p>Sabuk Asteroid terletak antara Mars dan Jupiter, sementara Sabuk Kuiper di luar Neptunus mengandung objek-objek beku.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="back-to-home">
+                <a href="../index.html" class="back-btn">Kembali ke Beranda</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="../assets/images/logo.svg" alt="AstronIndo Logo">
+                    <span>AstronIndo</span>
+                </div>
+                <div class="footer-links">
+                    <h4>Tautan Cepat</h4>
+                    <ul>
+                        <li><a href="../index.html">Beranda</a></li>
+                        <li><a href="galaksi.html">Galaksi</a></li>
+                        <li><a href="planet.html">Planet</a></li>
+                        <li><a href="quiz.html">Quiz</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Ikuti Kami</h4>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"></a>
+                        <a href="#" class="social-icon"></a>
+                        <a href="#" class="social-icon"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 AstronIndo. Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+        // Register GSAP plugins
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Mobile navigation toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Planet tooltip functionality
+        const planets = document.querySelectorAll('.planet-item, .sun-center');
+        const tooltip = document.querySelector('.planet-tooltip');
+
+        planets.forEach(planet => {
+            planet.addEventListener('mouseenter', function(e) {
+                const name = this.getAttribute('data-name');
+                if (name) {
+                    tooltip.textContent = name;
+                    tooltip.classList.add('active');
+                }
+            });
+
+            planet.addEventListener('mousemove', function(e) {
+                tooltip.style.left = e.pageX + 10 + 'px';
+                tooltip.style.top = e.pageY - 30 + 'px';
+            });
+
+            planet.addEventListener('mouseleave', function() {
+                tooltip.classList.remove('active');
+            });
+        });
+
+        // Planet cards animation with ScrollTrigger
+        gsap.from('.planet-card', {
+            scrollTrigger: {
+                trigger: '.planet-cards',
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            },
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: 'power2.out'
+        });
+
+        // Info cards animation
+        gsap.from('.info-card', {
+            scrollTrigger: {
+                trigger: '.info-grid',
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            },
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: 'power2.out'
+        });
+
+        // CSS for planet rotation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes rotate {
+                from {
+                    transform: translate(-50%, -50%) rotate(0deg);
+                }
+                to {
+                    transform: translate(-50%, -50%) rotate(360deg);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

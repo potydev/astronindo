@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Astronomi - AstronIndo</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon">
+    <style>
+        .quiz-detail {
+            padding: 120px 0 80px;
+            background: var(--primary-color);
+            min-height: 100vh;
+        }
+        
+        .quiz-hero {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .quiz-hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .quiz-hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .quiz-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quiz-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(124, 77, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 60s linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .quiz-start {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .quiz-start.hidden {
+            display: none;
+        }
+        
+        .quiz-start h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--text-dark);
+        }
+        
+        .quiz-start p {
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .difficulty-selector {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .difficulty-btn {
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: var(--text-light);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .difficulty-btn:hover {
+            background: rgba(124, 77, 255, 0.2);
+            border-color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+        
+        .difficulty-btn.selected {
+            background: rgba(124, 77, 255, 0.3);
+            border-color: var(--accent-color);
+        }
+        
+        .difficulty-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .difficulty-desc {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .start-quiz-btn {
+            padding: 15px 40px;
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .start-quiz-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(124, 77, 255, 0.6);
+        }
+        
+        .start-quiz-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .quiz-questions {
+            display: none;
+        }
+        
+        .quiz-questions.active {
+            display: block;
+        }
+        
+        .quiz-progress {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .progress-bar {
+            flex-grow: 1;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--gradient-accent);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+        }
+        
+        .quiz-question {
+            margin-bottom: 30px;
+        }
+        
+        .quiz-question h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--text-dark);
+        }
+        
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .option-btn {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: var(--text-light);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option-btn:hover:not(:disabled) {
+            background: rgba(124, 77, 255, 0.2);
+            border-color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+        
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+        
+        .option-btn.correct {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4caf50;
+        }
+        
+        .option-btn.incorrect {
+            background: rgba(244, 67, 54, 0.3);
+            border-color: #f44336;
+        }
+        
+        .option-indicator {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .option-btn.correct .option-indicator,
+        .option-btn.incorrect .option-indicator {
+            opacity: 1;
+        }
+        
+        .quiz-result {
+            display: none;
+            text-align: center;
+        }
+        
+        .quiz-result.active {
+            display: block;
+        }
+        
+        .result-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            background: var(--gradient-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        .result-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+        
+        .result-score {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--light-accent);
+        }
+        
+        .result-message {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .result-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .restart-btn, .home-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .restart-btn {
+            background: var(--gradient-accent);
+            color: white;
+        }
+        
+        .restart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(124, 77, 255, 0.6);
+        }
+        
+        .home-btn {
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid var(--accent-color);
+        }
+        
+        .home-btn:hover {
+            background: rgba(124, 77, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .quiz-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--light-accent);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .leaderboard {
+            margin-top: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .leaderboard h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--text-dark);
+        }
+        
+        .leaderboard-list {
+            list-style: none;
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+        
+        .leaderboard-rank {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            margin-right: 15px;
+        }
+        
+        .leaderboard-name {
+            flex-grow: 1;
+        }
+        
+        .leaderboard-score {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            color: var(--light-accent);
+        }
+        
+        @media (max-width: 768px) {
+            .quiz-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .quiz-container {
+                padding: 20px;
+            }
+            
+            .quiz-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .difficulty-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .quiz-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .result-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="../assets/images/logo.svg" alt="AstronIndo Logo">
+                <span>AstronIndo</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="../index.html" class="nav-link">Beranda</a>
+                </li>
+                <li class="nav-item">
+                    <a href="galaksi.html" class="nav-link">Galaksi</a>
+                </li>
+                <li class="nav-item">
+                    <a href="planet.html" class="nav-link">Planet</a>
+                </li>
+                <li class="nav-item">
+                    <a href="quiz.html" class="nav-link">Quiz</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Quiz Detail Section -->
+    <section class="quiz-detail">
+        <div class="container">
+            <div class="quiz-hero">
+                <h1>Quiz Astronomi</h1>
+                <p>Uji pengetahuan Anda tentang alam semesta dengan quiz interaktif kami. Pilih tingkat kesulitan dan mulai petualangan astronomi Anda!</p>
+            </div>
+
+            <div class="quiz-container">
+                <!-- Quiz Start Screen -->
+                <div class="quiz-start">
+                    <h2>Pilih Tingkat Kesulitan</h2>
+                    <p>Pilih tingkat kesulitan yang sesuai dengan pengetahuan astronomi Anda</p>
+                    
+                    <div class="difficulty-selector">
+                        <div class="difficulty-btn" data-level="easy">
+                            <div class="difficulty-title">Pemula</div>
+                            <div class="difficulty-desc">10 pertanyaan dasar</div>
+                        </div>
+                        <div class="difficulty-btn" data-level="medium">
+                            <div class="difficulty-title">Menengah</div>
+                            <div class="difficulty-desc">15 pertanyaan standar</div>
+                        </div>
+                        <div class="difficulty-btn" data-level="hard">
+                            <div class="difficulty-title">Ahli</div>
+                            <div class="difficulty-desc">20 pertanyaan sulit</div>
+                        </div>
+                    </div>
+                    
+                    <button class="start-quiz-btn" disabled>Mulai Quiz</button>
+                </div>
+
+                <!-- Quiz Questions -->
+                <div class="quiz-questions">
+                    <div class="quiz-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="progress-text">1/10</span>
+                    </div>
+                    
+                    <div class="quiz-question">
+                        <h3 id="question-text">Loading question...</h3>
+                        <div class="quiz-options">
+                            <button class="option-btn">
+                                <span class="option-text">Option 1</span>
+                                <span class="option-indicator"></span>
+                            </button>
+                            <button class="option-btn">
+                                <span class="option-text">Option 2</span>
+                                <span class="option-indicator"></span>
+                            </button>
+                            <button class="option-btn">
+                                <span class="option-text">Option 3</span>
+                                <span class="option-indicator"></span>
+                            </button>
+                            <button class="option-btn">
+                                <span class="option-text">Option 4</span>
+                                <span class="option-indicator"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Result -->
+                <div class="quiz-result">
+                    <div class="result-icon">🌟</div>
+                    <h2 class="result-title">Quiz Selesai!</h2>
+                    <div class="result-score">Skor: 0/0</div>
+                    <p class="result-message">Loading result...</p>
+                    
+                    <div class="quiz-stats">
+                        <div class="stat-card">
+                            <div class="stat-value">0%</div>
+                            <div class="stat-label">Akurasi</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Benar</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Salah</div>
+                        </div>
+                    </div>
+                    
+                    <div class="result-actions">
+                        <button class="restart-btn">Main Lagi</button>
+                        <button class="home-btn" onclick="window.location.href='../index.html'">Kembali ke Beranda</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leaderboard -->
+            <div class="leaderboard">
+                <h2>Papan Peringkat</h2>
+                <ul class="leaderboard-list">
+                    <li class="leaderboard-item">
+                        <div class="leaderboard-rank">1</div>
+                        <div class="leaderboard-name">Ahli Astronomi</div>
+                        <div class="leaderboard-score">95%</div>
+                    </li>
+                    <li class="leaderboard-item">
+                        <div class="leaderboard-rank">2</div>
+                        <div class="leaderboard-name">Bintang Pelajar</div>
+                        <div class="leaderboard-score">88%</div>
+                    </li>
+                    <li class="leaderboard-item">
+                        <div class="leaderboard-rank">3</div>
+                        <div class="leaderboard-name">Penjelajah Galaksi</div>
+                        <div class="leaderboard-score">82%</div>
+                    </li>
+                    <li class="leaderboard-item">
+                        <div class="leaderboard-rank">4</div>
+                        <div class="leaderboard-name">Pecinta Planet</div>
+                        <div class="leaderboard-score">75%</div>
+                    </li>
+                    <li class="leaderboard-item">
+                        <div class="leaderboard-rank">5</div>
+                        <div class="leaderboard-name">Pemula Antiksa</div>
+                        <div class="leaderboard-score">68%</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="../assets/images/logo.svg" alt="AstronIndo Logo">
+                    <span>AstronIndo</span>
+                </div>
+                <div class="footer-links">
+                    <h4>Tautan Cepat</h4>
+                    <ul>
+                        <li><a href="../index.html">Beranda</a></li>
+                        <li><a href="galaksi.html">Galaksi</a></li>
+                        <li><a href="planet.html">Planet</a></li>
+                        <li><a href="quiz.html">Quiz</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Ikuti Kami</h4>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"></a>
+                        <a href="#" class="social-icon"></a>
+                        <a href="#" class="social-icon"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 AstronIndo. Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+        // Register GSAP plugins
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Mobile navigation toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Quiz questions database
+        const quizQuestions = {
+            easy: [
+                {
+                    question: "Planet manakah yang dikenal sebagai 'Planet Merah'?",
+                    options: ["Venus", "Mars", "Jupiter", "Saturnus"],
+                    correct: 1
+                },
+                {
+                    question: "Berapa jumlah planet dalam tata surya kita?",
+                    options: ["7", "8", "9", "10"],
+                    correct: 1
+                },
+                {
+                    question: "Planet manakah yang memiliki cincin yang paling terkenal?",
+                    options: ["Jupiter", "Uranus", "Saturnus", "Neptunus"],
+                    correct: 2
+                },
+                {
+                    question: "Apa nama galaksi tempat tata surya kita berada?",
+                    options: ["Andromeda", "Bima Sakti", "Triangulum", "Sombrero"],
+                    correct: 1
+                },
+                {
+                    question: "Planet manakah yang terdekat dengan Matahari?",
+                    options: ["Venus", "Bumi", "Merkurius", "Mars"],
+                    correct: 2
+                },
+                {
+                    question: "Apa yang menyebabkan terjadinya fase bulan?",
+                    options: ["Bayangan Bumi", "Perubahan jarak Bulan-Bumi", "Perubahan sudut illuminasi Matahari", "Rotasi Bulan"],
+                    correct: 2
+                },
+                {
+                    question: "Planet manakah yang dikenal sebagai 'Bintang Pagi' atau 'Bintang Sore'?",
+                    options: ["Mars", "Venus", "Merkurius", "Jupiter"],
+                    correct: 1
+                },
+                {
+                    question: "Apa nama bintang terdekat dengan Bumi?",
+                    options: ["Proxima Centauri", "Alpha Centauri", "Sirius", "Matahari"],
+                    correct: 3
+                },
+                {
+                    question: "Planet manakah yang memiliki jumlah bulan terbanyak?",
+                    options: ["Jupiter", "Saturnus", "Uranus", "Neptunus"],
+                    correct: 1
+                },
+                {
+                    question: "Apa yang terjadi di pusat galaksi kita?",
+                    options: ["Tidak ada", "Lubang hitam supermasif", "Bintang terbesar", "Planet raksasa"],
+                    correct: 1
+                }
+            ],
+            medium: [
+                {
+                    question: "Berapa lama satu tahun di Pluto?",
+                    options: ["50 tahun Bumi", "100 tahun Bumi", "150 tahun Bumi", "248 tahun Bumi"],
+                    correct: 3
+                },
+                {
+                    question: "Apa nama satelit alami terbesar di tata surya?",
+                    options: ["Titan", "Ganymede", "Callisto", "Bulan"],
+                    correct: 1
+                },
+                {
+                    question: "Planet manakah yang memiliki rotasi tercepat?",
+                    options: ["Merkurius", "Venus", "Jupiter", "Bumi"],
+                    correct: 2
+                },
+                {
+                    question: "Berapa perkiraan usia alam semesta?",
+                    options: ["4,6 miliar tahun", "10 miliar tahun", "13,8 miliar tahun", "20 miliar tahun"],
+                    correct: 2
+                },
+                {
+                    question: "Apa nama meteorit yang menyebabkan kepunahan dinosaurus?",
+                    options: ["Chicxulub", "Tunguska", "Barringer", "Hoba"],
+                    correct: 0
+                },
+                {
+                    question: "Planet manakah yang memiliki hari terpanjang?",
+                    options: ["Merkurius", "Venus", "Mars", "Jupiter"],
+                    correct: 1
+                },
+                {
+                    question: "Apa nama teleskop luar angkasa yang diluncurkan pada tahun 1990?",
+                    options: ["Kepler", "Hubble", "James Webb", "Spitzer"],
+                    correct: 1
+                },
+                {
+                    question: "Berapa jarak rata-rata Bumi dari Matahari?",
+                    options: ["100 juta km", "150 juta km", "200 juta km", "250 juta km"],
+                    correct: 1
+                },
+                {
+                    question: "Apa nama fenomena ketika planet berada di sisi berlawanan Matahari dari Bumi?",
+                    options: ["Konjungsi", "Oposisi", "Elongasi", "Okultasi"],
+                    correct: 1
+                },
+                {
+                    question: "Planet manakah yang memiliki atmosfer paling tebal?",
+                    options: ["Venus", "Bumi", "Mars", "Jupiter"],
+                    correct: 0
+                },
+                {
+                    question: "Apa nama kawah terbesar di tata surya yang terletak di Merkurius?",
+                    options: ["Caloris Basin", "Hellas Basin", "Utopia Basin", "Ares Basin"],
+                    correct: 0
+                },
+                {
+                    question: "Berapa lama satu hari di Venus?",
+                    options: ["243 hari Bumi", "365 hari Bumi", "687 hari Bumi", "225 hari Bumi"],
+                    correct: 0
+                },
+                {
+                    question: "Apa nama badai raksasa di Jupiter?",
+                    options: ["Great Red Spot", "Great Dark Spot", "Great White Spot", "Great Blue Spot"],
+                    correct: 0
+                },
+                {
+                    question: "Planet manakah yang memiliki kemiringan sumbu rotasi paling ekstrem?",
+                    options: ["Mars", "Jupiter", "Uranus", "Neptunus"],
+                    correct: 2
+                },
+                {
+                    question: "Apa nama sabuk asteroid utama dalam tata surya?",
+                    options: ["Sabuk Kuiper", "Sabuk Oort", "Sabuk Asteroid", "Sabuk Troya"],
+                    correct: 2
+                }
+            ],
+            hard: [
+                {
+                    question: "Berapa massa Matahari dibandingkan dengan massa Bumi?",
+                    options: ["100.000 kali", "333.000 kali", "1.000.000 kali", "10.000 kali"],
+                    correct: 1
+                },
+                {
+                    question: "Apa nama efek yang menyebabkan pergeseran merah galaksi yang jauh?",
+                    options: ["Efek Doppler", "Efek Compton", "Efek Zeeman", "Efek Stark"],
+                    correct: 0
+                },
+                {
+                    question: "Planet manakah yang memiliki densitas terendah?",
+                    options: ["Mars", "Venus", "Saturnus", "Uranus"],
+                    correct: 2
+                },
+                {
+                    question: "Berapa kecepatan lepas dari permukaan Bumi?",
+                    options: ["7,9 km/s", "11,2 km/s", "15,5 km/s", "20,1 km/s"],
+                    correct: 1
+                },
+                {
+                    question: "Apa nama konstelasi yang mengandung bintang Polaris?",
+                    options: ["Ursa Major", "Ursa Minor", "Orion", "Cassiopeia"],
+                    correct: 1
+                },
+                {
+                    question: "Berapa lama cahaya Matahari mencapai Bumi?",
+                    options: ["30 detik", "1 menit", "8 menit", "15 menit"],
+                    correct: 2
+                },
+                {
+                    question: "Apa nama teori yang menjelaskan asal usul alam semesta?",
+                    options: ["Teori Steady State", "Teori Big Bang", "Teori Osilasi", "Teori Inflasi"],
+                    correct: 1
+                },
+                {
+                    question: "Planet manakah yang memiliki medan magnet terkuat?",
+                    options: ["Bumi", "Jupiter", "Saturnus", "Merkurius"],
+                    correct: 1
+                },
+                {
+                    question: "Apa nama satelit Jupiter yang memiliki vulkanisme aktif?",
+                    options: ["Europa", "Ganymede", "Io", "Callisto"],
+                    correct: 2
+                },
+                {
+                    question: "Berapa suhu di inti Matahari?",
+                    options: ["5 juta °C", "10 juta °C", "15 juta °C", "20 juta °C"],
+                    correct: 2
+                },
+                {
+                    question: "Apa nama fenomena ketika Bulan berada di antara Bumi dan Matahari?",
+                    options: ["Gerhana bulan", "Gerhana matahari", "Konjungsi", "Oposisi"],
+                    correct: 1
+                },
+                {
+                    question: "Planet manakah yang memiliki periode rotasi terpendek?",
+                    options: ["Jupiter", "Saturnus", "Merkurius", "Bumi"],
+                    correct: 1
+                },
+                {
+                    question: "Apa nama bintang tercepat di galaksi Bima Sakti?",
+                    options: ["Sirius", "Vega", "Barnard's Star", "Proxima Centauri"],
+                    correct: 2
+                },
+                {
+                    question: "Berapa jarak rata-rata galaksi Andromeda dari Bima Sakti?",
+                    options: ["1 juta tahun cahaya", "2,5 juta tahun cahaya", "5 juta tahun cahaya", "10 juta tahun cahaya"],
+                    correct: 1
+                },
+                {
+                    question: "Apa nama satelit Saturnus yang memiliki atmosfer tebal?",
+                    options: ["Mimas", "Enceladus", "Titan", "Rhea"],
+                    correct: 2
+                },
+                {
+                    question: "Berapa perkiraan jumlah bintang di galaksi Bima Sakti?",
+                    options: ["100 juta", "1 miliar", "200-400 miliar", "1 triliun"],
+                    correct: 2
+                },
+                {
+                    question: "Apa nama lubang hitam supermasif di pusat galaksi Bima Sakti?",
+                    options: ["Cygnus X-1", "Sagittarius A*", "M87*", "GRS 1915+105"],
+                    correct: 1
+                },
+                {
+                    question: "Planet manakah yang memiliki albedo tertinggi?",
+                    options: ["Venus", "Bumi", "Mars", "Jupiter"],
+                    correct: 0
+                },
+                {
+                    question: "Berapa lama satu tahun di Neptunus?",
+                    options: ["84 tahun Bumi", "125 tahun Bumi", "165 tahun Bumi", "248 tahun Bumi"],
+                    correct: 2
+                },
+                {
+                    question: "Apa nama teleskop luar angkasa yang diluncurkan pada tahun 2021?",
+                    options: ["Hubble", "Spitzer", "James Webb", "Kepler"],
+                    correct: 2
+                }
+            ]
+        };
+
+        // Quiz state
+        let currentDifficulty = null;
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let quizActive = false;
+
+        // DOM elements
+        const quizStart = document.querySelector('.quiz-start');
+        const quizQuestionsEl = document.querySelector('.quiz-questions');
+        const quizResult = document.querySelector('.quiz-result');
+        const difficultyBtns = document.querySelectorAll('.difficulty-btn');
+        const startQuizBtn = document.querySelector('.start-quiz-btn');
+        const questionText = document.getElementById('question-text');
+        const optionBtns = document.querySelectorAll('.option-btn');
+        const progressFill = document.querySelector('.progress-fill');
+        const progressText = document.querySelector('.progress-text');
+        const resultTitle = document.querySelector('.result-title');
+        const resultScore = document.querySelector('.result-score');
+        const resultMessage = document.querySelector('.result-message');
+        const restartBtn = document.querySelector('.restart-btn');
+        const statValues = document.querySelectorAll('.stat-value');
+
+        // Difficulty selection
+        difficultyBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                difficultyBtns.forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                currentDifficulty = this.getAttribute('data-level');
+                startQuizBtn.disabled = false;
+            });
+        });
+
+        // Start quiz
+        startQuizBtn.addEventListener('click', startQuiz);
+        restartBtn.addEventListener('click', restartQuiz);
+
+        function startQuiz() {
+            if (!currentDifficulty) return;
+            
+            currentQuestions = [...quizQuestions[currentDifficulty]];
+            currentQuestionIndex = 0;
+            score = 0;
+            quizActive = true;
+            
+            quizStart.classList.add('hidden');
+            quizQuestionsEl.classList.add('active');
+            quizResult.classList.remove('active');
+            
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= currentQuestions.length) {
+                showResult();
+                return;
+            }
+            
+            const question = currentQuestions[currentQuestionIndex];
+            questionText.textContent = question.question;
+            
+            optionBtns.forEach((btn, index) => {
+                const optionText = btn.querySelector('.option-text');
+                const optionIndicator = btn.querySelector('.option-indicator');
+                
+                optionText.textContent = question.options[index];
+                optionIndicator.textContent = '';
+                btn.classList.remove('correct', 'incorrect');
+                btn.disabled = false;
+                btn.onclick = () => selectAnswer(index);
+            });
+            
+            updateProgress();
+        }
+
+        function selectAnswer(answerIndex) {
+            const question = currentQuestions[currentQuestionIndex];
+            const isCorrect = answerIndex === question.correct;
+            
+            // Disable all buttons
+            optionBtns.forEach(btn => {
+                btn.disabled = true;
+            });
+            
+            // Show correct/incorrect styling
+            optionBtns[question.correct].classList.add('correct');
+            optionBtns[question.correct].querySelector('.option-indicator').textContent = '✓';
+            
+            if (!isCorrect) {
+                optionBtns[answerIndex].classList.add('incorrect');
+                optionBtns[answerIndex].querySelector('.option-indicator').textContent = '✗';
+            } else {
+                score++;
+            }
+            
+            // Move to next question after a delay
+            setTimeout(() => {
+                currentQuestionIndex++;
+                loadQuestion();
+            }, 1500);
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
+            gsap.to(progressFill, {
+                width: `${progress}%`,
+                duration: 0.5,
+                ease: 'power2.out'
+            });
+            progressText.textContent = `${currentQuestionIndex + 1}/${currentQuestions.length}`;
+        }
+
+        function showResult() {
+            quizActive = false;
+            quizQuestionsEl.classList.remove('active');
+            quizResult.classList.add('active');
+            
+            const percentage = (score / currentQuestions.length) * 100;
+            
+            resultScore.textContent = `Skor: ${score}/${currentQuestions.length}`;
+            
+            statValues[0].textContent = `${percentage.toFixed(0)}%`;
+            statValues[1].textContent = score;
+            statValues[2].textContent = currentQuestions.length - score;
+            
+            let message = '';
+            let icon = '🌟';
+            
+            if (percentage >= 90) {
+                message = "Luar biasa! Anda adalah ahli astronomi sejati!";
+                icon = '🏆';
+            } else if (percentage >= 70) {
+                message = "Hebat! Anda memiliki pengetahuan astronomi yang sangat baik!";
+                icon = '🌟';
+            } else if (percentage >= 50) {
+                message = "Bagus! Anda memiliki pemahaman yang solid tentang astronomi.";
+                icon = '⭐';
+            } else {
+                message = "Terus belajar! Alam semesta penuh dengan pengetahuan menarik untuk dieksplorasi.";
+                icon = '🔭';
+            }
+            
+            resultMessage.textContent = message;
+            document.querySelector('.result-icon').textContent = icon;
+            
+            // Animate result elements
+            gsap.from('.result-icon', {
+                scale: 0,
+                duration: 0.5,
+                ease: 'back.out(1.7)'
+            });
+            
+            gsap.from('.result-title, .result-score, .result-message', {
+                y: 20,
+                opacity: 0,
+                duration: 0.5,
+                stagger: 0.1,
+                ease: 'power2.out'
+            });
+            
+            gsap.from('.stat-card', {
+                scale: 0.8,
+                opacity: 0,
+                duration: 0.5,
+                stagger: 0.1,
+                ease: 'back.out(1.2)'
+            });
+        }
+
+        function restartQuiz() {
+            quizResult.classList.remove('active');
+            quizStart.classList.remove('hidden');
+            currentDifficulty = null;
+            difficultyBtns.forEach(btn => btn.classList.remove('selected'));
+            startQuizBtn.disabled = true;
+        }
+
+        // Initial animations
+        gsap.from('.quiz-container', {
+            scale: 0.9,
+            opacity: 0,
+            duration: 0.8,
+            ease: 'power2.out'
+        });
+
+        gsap.from('.difficulty-btn', {
+            y: 30,
+            opacity: 0,
+            duration: 0.5,
+            stagger: 0.1,
+            ease: 'power2.out'
+        });
+
+        gsap.from('.leaderboard-item', {
+            x: -30,
+            opacity: 0,
+            duration: 0.5,
+            stagger: 0.1,
+            ease: 'power2.out',
+            scrollTrigger: {
+                trigger: '.leaderboard',
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+    </script>
+</body>
+</html>

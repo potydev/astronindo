@@ -1,0 +1,35 @@
+{
+  "name": "astronindo",
+  "version": "1.0.0",
+  "description": "Website pembelajaran astronomi dengan animasi GSAP yang halus",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server . -p 8080 -o",
+    "build": "echo 'Build process not needed for static site'",
+    "dev": "npx http-server . -p 8080 -o -c-1"
+  },
+  "keywords": [
+    "astronomy",
+    "education",
+    "website",
+    "gsap",
+    "animation",
+    "indonesia",
+    "galaxy",
+    "planet",
+    "solar-system"
+  ],
+  "author": "AstronIndo Team",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/astronindo/astronindo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/astronindo/astronindo/issues"
+  },
+  "homepage": "https://github.com/astronindo/astronindo#readme"
+}
