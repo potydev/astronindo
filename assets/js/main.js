@@ -81,17 +81,9 @@ document.addEventListener('DOMContentLoaded', function() {
             ease: 'power1.inOut'
         });
 
-        gsap.to('.astronaut-arm.left', {
-            rotation: -30,
-            duration: 2,
-            repeat: -1,
-            yoyo: true,
-            ease: 'power1.inOut'
-        });
-
-        gsap.to('.astronaut-arm.right', {
-            rotation: 30,
-            duration: 2,
+        gsap.to('.astronaut-image', {
+            rotation: 5,
+            duration: 4,
             repeat: -1,
             yoyo: true,
             ease: 'power1.inOut'
