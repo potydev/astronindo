@@ -2,6 +2,10 @@
 
 AstronIndo adalah website pembelajaran interaktif tentang astronomi dan alam semesta dengan animasi GSAP yang halus dan menarik.
 
+## Tampilan Website
+
+![Tampilan Website AstronIndo](assets/images/bodo.png)
+
 ## Fitur Utama
 
 - **Desain Responsif**: Website yang optimal di berbagai perangkat
