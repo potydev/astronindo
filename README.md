@@ -149,5 +149,5 @@ Proyek ini dilisensikan under MIT License - lihat file [LICENSE](LICENSE) untuk 
 ## Kontak
 
 Jika ada pertanyaan atau saran, silakan hubungi:
-- Email: info@astronindo.com
+- Email: dapotmatthew02@gmail.com
 - Website: www.astronindo.com
